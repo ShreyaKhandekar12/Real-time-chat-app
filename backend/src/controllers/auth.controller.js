@@ -81,10 +81,11 @@ const logout = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const { profilePic } = req.body;
+    console.log("body:",req.body);
     const userId = req.user._id;
-    if (!profilePic)
+    if (!profilePic){
       return res.status(400).json({ message: "Profile Picture is required" });
-
+    }
     //! Upload to cloudinary
     const upload_res = await cloudinary.uploader.upload(profilePic);
     console.log("Upload response:", upload_res);

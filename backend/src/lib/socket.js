@@ -11,7 +11,7 @@ const io = new Server(server, {
   },
 });
 
-//* for real time messaging
+//* for real-time messaging
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
@@ -25,8 +25,31 @@ io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
   if (userId) userSocketMap[userId] = socket.id;
 
-  //* io.emit() is used to send events to all the connected clients
+  //* Emit online users to all clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+  // Handle incoming messages with mentions
+  socket.on("sendMessage", (messageData) => {
+    const { senderId, message, mentionedUsers } = messageData;
+
+    // Notify all users about the new message
+    io.emit("newMessage", { senderId, message });
+
+    // Check if any users are mentioned
+    if (mentionedUsers && mentionedUsers.length > 0) {
+      mentionedUsers.forEach((mentionedUser) => {
+        // Find the socket ID of the mentioned user
+        const receiverSocketId = getReceiverSocketId(mentionedUser);
+        if (receiverSocketId) {
+          // Notify the mentioned user with the message
+          io.to(receiverSocketId).emit("mentionNotification", {
+            senderId,
+            message,
+          });
+        }
+      });
+    }
+  });
 
   socket.on("disconnect", () => {
     console.log("A user disconnected: ", socket.id);

@@ -1,5 +1,26 @@
 {
   "dependencies": {
     "emoji-mart": "^5.6.0"
-  }
+  },
+  "name": "chatwebapp",
+  "version": "1.0.0",
+  "description": "A real-time chat application built for seamless conversations and intelligent summarization. YapChat empowers users with instant communication, media sharing, and AI-powered chat summaries — making chat history easier to revisit and understand.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShreyaKhandekar12/Real-time-chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShreyaKhandekar12/Real-time-chat-app/issues"
+  },
+  "homepage": "https://github.com/ShreyaKhandekar12/Real-time-chat-app#readme"
 }

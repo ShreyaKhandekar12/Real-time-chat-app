@@ -31,11 +31,15 @@ const ChatContainer = () => {
             `${msg.senderId === authUser._id ? "You" : selectedUser.fullName}: ${msg.text}`
         );
 
-      const res = await axios.post(
-        "http://localhost:5001/api/message/summarize",
-        { messages: textMessages },
-        { withCredentials: true }
-      );
+  const baseURL =
+          import.meta.env.MODE === "development"? "http://localhost:5001/api" : "/api";
+
+  const res = await axios.post(
+    `${baseURL}/message/summarize`,
+    { messages: textMessages },
+    { withCredentials: true }
+  );
+
 
       const summaryText =
         res.data?.summary?.parts?.[0]?.text || "No summary found.";
